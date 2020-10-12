@@ -1,4 +1,5 @@
 import React from 'react';
+import Board from './Board';
 
 export default class Game extends React.Component {
     constructor(props){
@@ -12,7 +13,8 @@ export default class Game extends React.Component {
     jumpTo(step) {
         this.setState({
             stepNumber: step,
-            xIsNext: step % 2 === 0
+            xIsNext: step % 2 === 0,
+            history: this.state.history.slice(0, step + 1)
         });
     }
     handleClick(i) {
@@ -23,17 +25,53 @@ export default class Game extends React.Component {
         if(winner || squares[i]) {
             return;
         }
-        squares[i] = this.state.xIsNext? 'X': 'O';
+        squares[i] = this.state.xIsNext ? 'X' : 'O';
         this.setState({
             history: history.concat({
-                squares
+                squares: squares
             }),
             xIsNext: !this.state.xIsNext,
-            stepNumber: history.length.length
-        })
+            stepNumber: history.length
+        });
+    }
+    render() {
+        const history = this.state.history;
+        const current = history[history.length -1];
+        const winner = calculateWinner(current.squares);
+        const moves = history.map((step, move) => {
+            const desc = move ? `Go to # ${move}` : 'Start the Game';
+            return (
+                <li key={move}>
+                    <button
+                        onClick={() => {
+                            this.jumpTo(move);
+                        }}
+                    >{desc}
+                    </button>
+                </li>
+            );
+        });
+        let status = winner ? `Winner is ${winner}` : `Next player is ${this.state.xIsNext ? 'X' : 'O'}`;
+
+        return <div className="game">
+                    <div className="game-board">
+                        <Board 
+                            onClick={(i) => this.handleClick(i)}
+                            squares={current.squares} 
+                        />
+                    </div>
+                    <div className="game-info">
+                        <div>{status}</div>
+                        <ul>{moves}</ul>
+                    </div>
+                </div>
+            
     }
 }
 
 function calculateWinner(squares) {
+    const winnerLines = [
+
+    ]
     return null;
 }
