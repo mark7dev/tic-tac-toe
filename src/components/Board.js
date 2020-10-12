@@ -8,6 +8,7 @@ export default function Board(props) {
             <Square 
                 value={props.squares[i]}
                 onClick={() => props.onClick(i)}
+                disabled={props.disabled}
             />
         );
     };

@@ -4,7 +4,8 @@ export default function Square (props) {
     return ( 
         <button 
             className="square"
-            onClick={props.onClick}    
+            onClick={props.onClick}
+            disabled={props.disabled}    
         >{props.value}
         </button>
     );
